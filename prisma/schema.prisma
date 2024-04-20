@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int       @id @default(autoincrement())
+  email       String    @unique
+  name        String?
+  avatar_url  String
+  user_name   String    @unique
+  google_uid  String    @unique
+  college_name String
+  phone       String
+  bio         String
+  socials     String[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  lead College? @relation("college_lead")
+
+  core_team_colleges College[] @relation("Core_team_members")
+  member_of_colleges College[] @relation("College_Members")
+}
+
+model College {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  email       String   @unique
+  leadId Int @unique
+  lead        User  @relation("college_lead", fields:[leadId], references: [id])
+  core_team    User[]   @relation("Core_team_members")
+  description String
+  banner_url  String
+  members_count Int
+  region      String
+  photos      String[]
+  videos      String[]
+  socials     String[]
+  members User[]   @relation("College_Members")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
