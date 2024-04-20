@@ -3,7 +3,7 @@ import RoleBlob from "@/components/role_blob";
 export default function MembersPage() {
   return (
     <main className="flex gap-4 min-h-screen flex-col bg-background p-24">
-      <h1 className="text-2xl text-primary font-bold">Members</h1>
+      <h1 className="text-2xl text-primary font-semibold">Members</h1>
 
       <input
         type="text"
@@ -12,7 +12,7 @@ export default function MembersPage() {
       />
 
       <div className="flex gap-2">
-        <div className="flex bg-gray-800 p-4 rounded-xl text-sm">
+        <div className="flex bg-zinc-800 p-4 rounded-xl text-sm">
           <span>Total Members: 400</span>
         </div>
       </div>

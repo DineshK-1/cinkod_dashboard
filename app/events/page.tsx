@@ -2,18 +2,18 @@ export default function EventsPage() {
   return (
     <main className="flex flex-col gap-4 p-24 bg-background min-h-screen">
       <div className="flex w-full justify-between">
-        <h1 className="text-primary text-2xl">Events</h1>
-        <button className="border-[2px] border-gray-800 px-8     py-2 w-fit text-gray-300">
+        <h1 className="text-primary text-2xl font-semibold">Events</h1>
+        <button className="border-[2px] border-gray-800 px-8 py-2 w-fit text-gray-300">
           Create Event
         </button>
       </div>
       <div className="flex">
-        <div className="bg-gray-800 p-4 rounded-xl text-sm">
+        <div className="bg-zinc-800 p-4 rounded-xl text-sm">
           <span>Total Events: 400</span>
         </div>
       </div>
       <div className="grid grid-cols-4">
-        <div className="bg-gray-800 p-4 rounded-xl text-sm flex flex-col gap-4">
+        <div className="bg-zinc-800 p-6 rounded-xl text-sm flex flex-col gap-4">
           <span className="bg-gray-500 w-full h-56"></span>
           <span className="text-xl">Event Name</span>
           <span className="text-gray-300">
