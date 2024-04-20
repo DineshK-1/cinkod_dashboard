@@ -7,7 +7,7 @@ export default function MembersPage() {
 
       <input
         type="text"
-        className="w-fit p-3 bg-transparent border text-sm outline-none border-gray-800"
+        className="w-fit p-4 bg-transparent border-[2px] text-sm outline-none border-zinc-800"
         placeholder="Search members"
       />
 
@@ -18,7 +18,7 @@ export default function MembersPage() {
       </div>
       <table className="">
         <thead>
-          <tr className="border">
+          <tr className="border-[2px] border-zinc-800">
             <th>Name</th>
             <th>Email</th>
             <th>Phone No.</th>
@@ -27,7 +27,7 @@ export default function MembersPage() {
           </tr>
         </thead>
         <tbody>
-          <tr className="border text-center">
+          <tr className="border-[2px] border-zinc-800 text-center">
             <td>John Doe</td>
             <td>test@email.com</td>
             <td>432545</td>

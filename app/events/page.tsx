@@ -1,11 +1,16 @@
+import Link from "next/link";
+
 export default function EventsPage() {
   return (
     <main className="flex flex-col gap-4 p-24 bg-background min-h-screen">
       <div className="flex w-full justify-between">
         <h1 className="text-primary text-2xl font-semibold">Events</h1>
-        <button className="border-[2px] border-gray-800 px-8 py-2 w-fit text-gray-300">
+        <Link
+          href="/events/create"
+          className="border-[2px] border-gray-800 px-8 py-2 w-fit text-gray-300"
+        >
           Create Event
-        </button>
+        </Link>
       </div>
       <div className="flex">
         <div className="bg-zinc-800 p-4 rounded-xl text-sm">
