@@ -31,3 +31,8 @@ body {
     text-wrap: balance;
   }
 }
+
+th, td{
+  padding: 1rem;
+  border-radius: 10px;
+}
