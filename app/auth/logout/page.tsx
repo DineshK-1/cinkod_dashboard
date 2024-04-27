@@ -1,6 +1,9 @@
 "use client";
 
+import { auth } from "@/firebase/firebase";
 import { useUser } from "@/store";
+import axios from "axios";
+import { signOut } from "firebase/auth";
 import { useEffect } from "react";
 
 export default function LogoutPage() {
@@ -8,6 +11,8 @@ export default function LogoutPage() {
 
   useEffect(() => {
     logoutUser();
+    signOut(auth);
+    axios.post("/api/auth/logout");
   }, [logoutUser]);
 
   return (

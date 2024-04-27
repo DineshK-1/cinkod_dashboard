@@ -33,7 +33,7 @@ model User {
   member_of_colleges College[] @relation("College_Members")
 }
 
-model Admins{
+model CinkodAdmin{
   id          Int       @id @default(autoincrement())
   email       String    @unique
   name        String?
@@ -45,7 +45,87 @@ model Admins{
   updatedAt   DateTime  @updatedAt
 }
 
-model Events {
+model CollegeAdmin{
+  id          Int       @id @default(autoincrement())
+  email       String    @unique
+  name        String
+  user_name   String    @unique
+  google_uid  String?    @unique
+  phone       String
+
+  college     College  @relation(fields: [collegeId], references: [id])
+  collegeId   Int
+
+  isAdminstrator Boolean
+  isLead Boolean
+  isCoreTeam Boolean
+  isMember Boolean
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// model AdminPermissions {
+//   id          Int       @id @default(autoincrement())
+
+//   collegeAdmin        CollegeAdmin      
+//   adminId      Int
+
+//   isAdminstrator Boolean
+//   isLead Boolean
+//   isCoreTeam Boolean
+//   isMember Boolean
+
+  // canCreateCollege Boolean
+  // canCreateEvent Boolean
+  // canCreatePost Boolean
+  // canCreateUser Boolean
+  // canCreateAdmin Boolean
+  // canCreateCinkodAdmin Boolean
+  // canCreateCollegeAdmin Boolean
+  // canCreateEventAdmin Boolean
+  // canCreatePostAdmin Boolean
+  // canCreateUserAdmin Boolean
+  // canCreateCollegeMember Boolean
+  // canCreateEventMember Boolean
+  // canCreatePostMember Boolean
+  // canCreateUserMember Boolean
+  // canCreateCollegeAdminMember Boolean
+  // canCreateEventAdminMember Boolean
+  // canCreatePostAdminMember Boolean
+  // canCreateUserAdminMember Boolean
+  // canCreateCinkodAdminMember Boolean
+  // canCreateCollegeAdminAdmin Boolean
+  // canCreateEventAdminAdmin Boolean
+  // canCreatePostAdminAdmin Boolean
+  // canCreateUserAdminAdmin Boolean
+  // canCreateCinkodAdminAdmin Boolean
+  // canCreateCollegeAdminMemberAdmin Boolean
+  // canCreateEventAdminMemberAdmin Boolean
+  // canCreatePostAdminMemberAdmin Boolean
+  // canCreateUserAdminMemberAdmin Boolean
+  // canCreateCinkodAdminMemberAdmin Boolean
+  // canCreateCollegeAdminAdminAdmin Boolean
+  // canCreateEventAdminAdminAdmin Boolean
+  // canCreatePostAdminAdminAdmin Boolean
+  // canCreateUserAdminAdminAdmin Boolean
+  // canCreateCinkodAdminAdminAdmin Boolean
+  // canCreateCollegeAdminMemberAdminAdmin Boolean
+  // canCreateEventAdminMemberAdminAdmin Boolean
+  // canCreatePostAdminMemberAdminAdmin Boolean
+  // canCreateUserAdminMemberAdminAdmin Boolean
+  // canCreateCinkodAdminMemberAdminAdmin Boolean
+  // canCreateCollegeAdminAdminAdminAdmin Boolean
+  // canCreateEventAdminAdminAdminAdmin Boolean
+  // canCreatePostAdminAdminAdminAdmin Boolean
+  // canCreateUserAdminAdminAdminAdmin Boolean
+  // canCreateCinkodAdminAdminAdminAdmin Boolean
+
+//   createdAt   DateTime  @default(now())
+//   updatedAt   DateTime  @updatedAt
+// }
+
+model Event {
   id          Int      @id @default(autoincrement())
   name        String
   description String
@@ -76,7 +156,8 @@ model College {
   videos      String[]
   socials     String[]
   members User[]   @relation("College_Members")
-  events        Events[]
+  events        Event[]
+  admins CollegeAdmin[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

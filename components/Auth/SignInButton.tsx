@@ -4,15 +4,21 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../../firebase/firebase";
 import { useUser } from "@/store";
 import { FirebaseUser } from "@/@types";
+import { useRouter } from "next/navigation";
 
 export default function SignInButton() {
-  const { setUser } = useUser();
+  const { setUser, user } = useUser();
+  const router = useRouter();
+  if (user) {
+    router.replace("/members");
+    return;
+  }
   const provider = new GoogleAuthProvider();
   const handleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user as FirebaseUser;
-      console.log(user);
+
       setUser(user);
     } catch (error) {
       console.error(error);
