@@ -1,91 +1,46 @@
-"use client";
-import { redirect } from "next/navigation";
-import { useState } from "react";
+import Link from "next/link";
 
-export default function BlogAnalytics() {
-  const [createBlog, setCreateBlog] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    content: "",
-    visibility: "public",
-  });
-
-  const blogdata = [
-    {
-      name: "b1",
-      content: "blalalalalalal",
-      visibility: "public",
-      date: "20/3/24",
-      views: 2000,
-    },
-    {
-      name: "b2",
-      content: "blalalalalalal",
-      visibility: "private",
-      date: "20/3/25",
-      views: 1500,
-    },
-    {
-      name: "b3",
-      content: "blalalalalalal",
-      visibility: "public",
-      date: "20/3/26",
-      views: 1800,
-    },
-    {
-      name: "b4",
-      content: "blalalalalalal",
-      visibility: "private",
-      date: "20/3/27",
-      views: 2200,
-    },
-  ];
-
+export default function Blog() {
   return (
-    <div className="flex flex-col m-20 items-center gap-2">
-      <h1>BLOGS</h1>
-      <button
-        className="bg-[#f1ec21] text-black px-6 py-3 rounded-2xl font-semibold"
-        onClick={redirect("/blog/create")}
-      >
-        + Create Blog
-      </button>
-      <table className="text-center rounded-2xl m-10 table-auto w-full">
-        <thead>
-          <tr>
-            <th>
-              <input type="checkbox" />
-            </th>
-            <th>Blog</th>
-            <th>Visibility</th>
-            <th>Publish Date</th>
-            <th>Views</th>
-          </tr>
-        </thead>
-        <tbody>
-          {blogdata.map((blog, index) => (
-            <tr
-              key={index}
-              className="hover:text-[#f1ec21] rounded-2xl border-gray-300"
-              style={{
-                borderBottom:
-                  index === blogdata.length - 1 ? "none" : "1px solid #e5e7eb",
-              }}
+    <main className="flex flex-col gap-4 p-24 bg-background min-h-screen">
+      <div className="flex w-full justify-between">
+        <h1 className="text-primary text-2xl font-semibold">Blog</h1>
+        <Link
+          href="/blog/create"
+          className="border-[2px] border-gray-800 px-8 py-2 w-fit text-gray-300"
+        >
+          Create Blog
+        </Link>
+      </div>
+      <div className="flex"></div>
+      <div className="grid grid-cols-2">
+        <div className="bg-zinc-800 p-12 rounded-3xl text-sm flex flex-col gap-4">
+          <span className="bg-gray-500 w-full h-56"></span>
+          <span className="text-xl">Blog Title</span>
+          <span className="text-gray-300">
+            Blog content Non laboris commodo commodo mollit ea irure sit
+            exercitation consectetur. Consectetur veniam est ea in ullamco
+            aliquip cillum voluptate. Eiusmod enim duis occaecat magna dolor.
+            Qui ex do anim aute irure enim ullamco excepteur. Laboris qui
+            laboris laboris id in. Sunt culpa sunt aliquip ullamco pariatur
+            laborum consequat do anim laboris.
+          </span>
+          <div className="flex justify-between w-full gap-2">
+            <Link
+              href={`/blog/edit/blog`}
+              className="bg-accent font-semibold p-3 text-black hover:bg-transparent hover:text-white transition-all border border-transparent hover:border-accent w-full text-center"
             >
-              <td>
-                <input type="checkbox" />
-              </td>
-              <td className="flex flex-col">
-                <p>{blog.name}</p>
-                <p>{blog.content}</p>
-              </td>
-              <td>{blog.visibility}</td>
-              <td>{blog.date}</td>
-              <td>{blog.views}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+              Edit Blog
+            </Link>
+            <button className="bg-accent font-semibold p-3 text-black hover:bg-transparent hover:text-white transition-all border border-transparent hover:border-accent w-full">
+              View Stats
+            </button>
+          </div>
+          <button className="bg-primary font-semibold p-3 text-black hover:bg-transparent hover:text-white transition-all border border-transparent hover:border-primary">
+            View Page
+          </button>
+        </div>
+      </div>
+    </main>
   );
 }
