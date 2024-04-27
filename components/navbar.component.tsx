@@ -1,14 +1,21 @@
 "use client";
+import { useUser } from "@/store";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
 function NavBar() {
   const [navbar, setNavbar] = useState(false);
-  const links = [
+
+  const loggedInNavbar = [
     { name: "Events", href: "/events" },
     { name: "Members", href: "/members" },
+    { name: "Logout", href: "/auth/logout" },
   ];
+
+  const { user } = useUser();
+
+  const loggedOutNavbar = [{ name: "Login", href: "/auth/login" }];
   return (
     <nav className="w-full bg-transparent fixed top-0 left-0 right-0 z-10">
       <div className="justify-between px-4 mx-auto md:items-center md:flex md:px-24">
@@ -38,11 +45,17 @@ function NavBar() {
             }`}
           >
             <ul className="h-screen md:h-auto items-center justify-center md:flex gap-6">
-              {links.map((link) => (
-                <li key={link.name} className="">
-                  <Link href={link.href}>{link.name}</Link>
-                </li>
-              ))}
+              {user
+                ? loggedInNavbar.map((link) => (
+                    <li key={link.name} className="">
+                      <Link href={link.href}>{link.name}</Link>
+                    </li>
+                  ))
+                : loggedOutNavbar.map((link) => (
+                    <li key={link.name} className="">
+                      <Link href={link.href}>{link.name}</Link>
+                    </li>
+                  ))}
             </ul>
           </div>
         </div>

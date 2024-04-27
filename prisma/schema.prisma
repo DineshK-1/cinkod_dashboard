@@ -33,6 +33,34 @@ model User {
   member_of_colleges College[] @relation("College_Members")
 }
 
+model Admins{
+  id          Int       @id @default(autoincrement())
+  email       String    @unique
+  name        String?
+  avatar_url  String
+  user_name   String    @unique
+  google_uid  String    @unique
+  phone       String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Events {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  banner_url  String
+  date        DateTime
+  venue       String
+  from        DateTime
+  to          DateTime
+  maxSlots   Int
+  college     College  @relation(fields: [collegeId], references: [id])
+  collegeId   Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
 model College {
   id          Int      @id @default(autoincrement())
   name        String   @unique
@@ -48,6 +76,7 @@ model College {
   videos      String[]
   socials     String[]
   members User[]   @relation("College_Members")
+  events        Events[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
