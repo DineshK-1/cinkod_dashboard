@@ -1,5 +1,5 @@
 "use client";
-
+import { redirect } from "next/navigation";
 import { useState } from "react";
 
 export default function BlogAnalytics() {
@@ -9,29 +9,6 @@ export default function BlogAnalytics() {
     content: "",
     visibility: "public",
   });
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form submitted:", formData);
-    setFormData({
-      name: "",
-      content: "",
-      visibility: "public",
-    });
-    setCreateBlog(false);
-  };
-
-  const closeModal = () => {
-    setCreateBlog(false);
-  };
 
   const blogdata = [
     {
@@ -69,7 +46,7 @@ export default function BlogAnalytics() {
       <h1>BLOGS</h1>
       <button
         className="bg-[#f1ec21] text-black px-6 py-3 rounded-2xl font-semibold"
-        onClick={() => setCreateBlog(!createBlog)}
+        onClick={redirect("/blog/create")}
       >
         + Create Blog
       </button>
@@ -109,69 +86,6 @@ export default function BlogAnalytics() {
           ))}
         </tbody>
       </table>
-      {createBlog && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-800 bg-opacity-70">
-          <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md z-10">
-            <h2 className="text-lg font-semibold mb-4 text-black">
-              Create New Blog
-            </h2>
-            <form onSubmit={handleSubmit}>
-              <div className="mb-4">
-                <label htmlFor="name" className="block mb-2 text-black">
-                  Name:
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-black"
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="content" className="block mb-2 text-black">
-                  Content:
-                </label>
-                <textarea
-                  id="content"
-                  name="content"
-                  value={formData.content}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-black"
-                ></textarea>
-              </div>
-              <div className="mb-4">
-                <label htmlFor="visibility" className="block mb-2 text-black">
-                  Visibility:
-                </label>
-                <select
-                  id="visibility"
-                  name="visibility"
-                  value={formData.visibility}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-black"
-                >
-                  <option value="public">Public</option>
-                  <option value="private">Private</option>
-                </select>
-              </div>
-              <button
-                type="submit"
-                className="bg-[#f1ec21] text-black px-4 py-2 rounded-md font-semibold"
-              >
-                Create
-              </button>
-            </form>
-            <button
-              className="mt-4 text-black text-sm font-semibold"
-              onClick={closeModal}
-            >
-              <span className="material-icons-outlined">close</span>
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
