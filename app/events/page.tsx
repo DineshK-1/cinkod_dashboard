@@ -30,9 +30,12 @@ export default function EventsPage() {
             laborum consequat do anim laboris.
           </span>
           <div className="flex justify-between w-full gap-2">
-            <button className="bg-accent font-semibold p-3 text-black hover:bg-transparent hover:text-white transition-all border border-transparent hover:border-accent w-full">
+            <Link
+              href={`/events/edit/event`}
+              className="bg-accent font-semibold p-3 text-black hover:bg-transparent hover:text-white transition-all border border-transparent hover:border-accent w-full text-center"
+            >
               Edit Details
-            </button>
+            </Link>
             <button className="bg-accent font-semibold p-3 text-black hover:bg-transparent hover:text-white transition-all border border-transparent hover:border-accent w-full">
               View Stats
             </button>
