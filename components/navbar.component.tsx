@@ -10,6 +10,7 @@ function NavBar() {
   const loggedInNavbar = [
     { name: "Events", href: "/events" },
     { name: "Members", href: "/members" },
+    { name: "Blogs", href: "/blog" },
     { name: "Logout", href: "/auth/logout" },
   ];
 
