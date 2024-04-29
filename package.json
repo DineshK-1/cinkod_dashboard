@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^5.12.1",
@@ -14,6 +15,7 @@
     "@tanstack/react-table": "^8.16.0",
     "axios": "^1.6.8",
     "firebase": "^10.11.1",
+    "firebase-admin": "^12.1.0",
     "next": "14.2.2",
     "react": "^18",
     "react-dom": "^18",

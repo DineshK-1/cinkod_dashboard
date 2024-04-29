@@ -1,7 +1,15 @@
+import { College, User } from '@/@types';
 import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
+
+interface LinkUserToCollegeSuccess {
+  user: User;
+  college: College;
+}
+
+
 export async function POST(request: Request) {
   try {
     const { userId, collegeId } = await request.json()
@@ -12,7 +20,7 @@ export async function POST(request: Request) {
     console.log(error)
   }
 }
-const linkUserToCollege = async (userId: number, collegeId: number) => {
+const linkUserToCollege = async (userId: number, collegeId: number): Promise<LinkUserToCollegeSuccess> => {
   try {
     // Find the user and college by their respective IDs
     const user = await prisma.user.findUnique({ where: { id: userId } });
@@ -20,7 +28,7 @@ const linkUserToCollege = async (userId: number, collegeId: number) => {
 
     if (!user || !college) {
       console.error('User or college not found');
-      return;
+      throw new Error('User or college not found');
     }
 
     // Check if the user is already a member of the college
@@ -36,8 +44,7 @@ const linkUserToCollege = async (userId: number, collegeId: number) => {
     });
 
     if (existingMembership) {
-      console.log('User is already a member of this college');
-      return;
+      throw new Error('User is already a member of this college');
     }
 
     // Link the user to the college
@@ -60,7 +67,6 @@ const linkUserToCollege = async (userId: number, collegeId: number) => {
       },
     });
 
-    console.log('User linked to college successfully');
     return { user: updatedUser, college: updatedCollege };
   } catch (error) {
     console.error('Error linking user to college:', error);

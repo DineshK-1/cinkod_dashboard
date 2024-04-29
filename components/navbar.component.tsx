@@ -1,5 +1,6 @@
 "use client";
 import { useUser } from "@/store";
+import { Cross1Icon, HamburgerMenuIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -11,6 +12,7 @@ function NavBar() {
     { name: "Events", href: "/events" },
     { name: "Members", href: "/members" },
     { name: "Blogs", href: "/blog" },
+    { name: "College", href: "/college" },
     { name: "Logout", href: "/auth/logout" },
   ];
 
@@ -31,9 +33,9 @@ function NavBar() {
                 onClick={() => setNavbar(!navbar)}
               >
                 {navbar ? (
-                  <span className="material-symbols-outlined">close</span>
+                  <Cross1Icon />
                 ) : (
-                  <span className="material-symbols-outlined">menu</span>
+                  <HamburgerMenuIcon />
                 )}
               </button>
             </div>
@@ -41,22 +43,21 @@ function NavBar() {
         </div>
         <div>
           <div
-            className={`flex-1 flex items-center justify-self-center pb-3 mt-8 md:block md:pb-0 md:mt-0 ${
-              navbar ? "p-6 md:p-0 block gap-4" : "hidden"
-            }`}
+            className={`flex-1 flex items-center justify-self-center pb-3 mt-8 md:block md:pb-0 md:mt-0 ${navbar ? "p-6 md:p-0 block gap-4" : "hidden"
+              }`}
           >
             <ul className="h-screen md:h-auto items-center justify-center md:flex gap-6">
               {user
                 ? loggedInNavbar.map((link) => (
-                    <li key={link.name} className="">
-                      <Link href={link.href}>{link.name}</Link>
-                    </li>
-                  ))
+                  <li key={link.name} className="">
+                    <Link href={link.href}>{link.name}</Link>
+                  </li>
+                ))
                 : loggedOutNavbar.map((link) => (
-                    <li key={link.name} className="">
-                      <Link href={link.href}>{link.name}</Link>
-                    </li>
-                  ))}
+                  <li key={link.name} className="">
+                    <Link href={link.href}>{link.name}</Link>
+                  </li>
+                ))}
             </ul>
           </div>
         </div>
