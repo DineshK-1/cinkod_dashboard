@@ -20,6 +20,23 @@ export type User = {
   updatedAt: Date;
 };
 
+export type CollegeAdmin = {
+  id: number;
+  email: string;
+  name: string;
+  user_name: string;
+  google_uid: string;
+  phone: string;
+  college: College;
+  collegeId: number;
+  isAdminstrator: boolean;
+  isLead: boolean;
+  isCoreTeam: boolean;
+  isMember: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
 export type College = {
   id: number;
   name: string;
