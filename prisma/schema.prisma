@@ -23,7 +23,10 @@ model User {
   college_name String
   phone        String
   bio          String
-  socials      String[]
+  socials      Socials[]
+
+  comments    Comment[]
+
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
@@ -31,6 +34,14 @@ model User {
 
   core_team_colleges College[] @relation("Core_team_members")
   member_of_colleges College[] @relation("College_Members")
+}
+
+model Socials{
+  id          Int      @id @default(autoincrement())
+  name        String
+  url         String
+  user        User     @relation(fields: [userId], references: [id])
+  userId      Int
 }
 
 model CinkodAdmin {
@@ -42,7 +53,7 @@ model CinkodAdmin {
   google_uid String   @unique
   phone      String
   createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  updatedAt  DateTime @updatedAt @default(now())
 }
 
 model CollegeAdmin {
@@ -62,7 +73,7 @@ model CollegeAdmin {
   isMember       Boolean
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt @default(now())
 }
 
 // model AdminPermissions {
@@ -154,9 +165,42 @@ model College {
   photos        String[]
   videos        String[]
   socials       String[]
+
   members       User[]         @relation("College_Members")
+
   events        Event[]
+
   admins        CollegeAdmin[]
+
+  blogs        Blog[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
+}
+
+
+model Blog {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  banner_url  String
+  college     College  @relation(fields: [collegeId], references: [id])
+  collegeId   Int
+  upvotes     Int
+  shares     Int
+  comments    Comment[]
+  views       Int
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Comment {
+  id          Int      @id @default(autoincrement())
+  text        String
+  user        User     @relation(fields: [userId], references: [id])
+  userId      Int
+  blog        Blog     @relation(fields: [blogId], references: [id])
+  blogId      Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
