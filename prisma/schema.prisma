@@ -28,7 +28,7 @@ model User {
   comments    Comment[]
 
   createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  updatedAt    DateTime @updatedAt @default(now())
 
   lead College? @relation("college_lead")
 
@@ -148,7 +148,7 @@ model Event {
   college     College  @relation(fields: [collegeId], references: [id])
   collegeId   Int
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  updatedAt   DateTime @updatedAt @default(now())
 }
 
 model College {
@@ -174,7 +174,7 @@ model College {
 
   blogs        Blog[]
   createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  updatedAt     DateTime       @updatedAt @default(now())
 }
 
 
@@ -191,7 +191,7 @@ model Blog {
   views       Int
 
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  updatedAt   DateTime @updatedAt @default(now())
 }
 
 model Comment {
@@ -202,5 +202,5 @@ model Comment {
   blog        Blog     @relation(fields: [blogId], references: [id])
   blogId      Int
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  updatedAt   DateTime @updatedAt @default(now())
 }

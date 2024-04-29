@@ -12,26 +12,23 @@ function verifyHeaderHasToken(req: Request) {
 }
 
 async function checkIfUserHasAccess(token: string) {
-  const { uid } = await FirebaseAdminAuth.verifyIdToken(token)
+  const { uid } = await FirebaseAdminAuth.verifyIdToken(token);
 
   if (!uid) {
     throw new Error("User not found!");
   }
-
   const prisma = new PrismaClient();
-
-  const user = await prisma.user.findFirst({
+  const user = await prisma.collegeAdmin.findFirst({
     where: {
-      google_uid: uid,
-    },
+      google_uid: uid
+    }
   });
 
   if (!user) {
     throw new Error("User not found!");
   }
 
-
-
+  return user;
 }
 
 export async function POST(request: Request) {
@@ -40,16 +37,20 @@ export async function POST(request: Request) {
     cookies().set("authToken", token, {
       httpOnly: true,
       secure: true,
-      sameSite: "strict",
+      sameSite: "strict"
     });
-    await checkIfUserHasAccess(token).then((user) => {
-      console.log(user)
-    }).catch((error) => {
-      throw new Error(error);
-    })
+    await checkIfUserHasAccess(token)
+      .then((user) => {
+        console.log(user);
+      })
+      .catch((error) => {
+        throw new Error(error);
+      });
 
     return new NextResponse("Logged in", { status: 200 });
   } catch (error: any) {
-    return new NextResponse("You don't have access to this website", { status: 401 });
+    return new NextResponse("You don't have access to this website", {
+      status: 401
+    });
   }
 }
