@@ -1,25 +1,29 @@
 "use client";
+import TextEditor from "@/components/TipTap/index";
 import TagInput from "@/components/CreateEvent/TagInput.component";
 import axios from "axios";
 import { useState } from "react";
+import { useUser } from "@/store";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 interface FormData {
   blogTitle: string;
   blogContent: string;
   blogAuthor: string;
-  PublishDateTime: string;
   tags: string[];
-  featureImage: File | null;
-  relatedPosts: string[];
 }
 export default function CreateBlogPage() {
+  const { user } = useUser();
   const [formData, setFormData] = useState<FormData>({
     blogTitle: "Name",
-    blogContent: "temp",
+    blogContent: `
+<h1>
+Sample Heading
+</h1>
+<p>Edit the content here</>
+`,
     blogAuthor: "John",
-    PublishDateTime: "2023-05-01T10:00:00",
-    tags: ["dummy", "tag1", "tag2"],
-    featureImage: null,
-    relatedPosts: ["post2"],
+    tags: ["dummy", "tag1", "tag2"]
 
     // bannerImage: null,
     // eventName: "Dummy Event Name",
@@ -34,11 +38,27 @@ export default function CreateBlogPage() {
     // gallery: [],
   });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const router = useRouter();
+
+  const handleSubmit = () => {
+    toast.loading("Creating Blog", { duration: 2000 });
     axios
-      .post("/api/db/blogs/create", formData)
-      .then((res) => console.log(res.data));
+      .post("/api/db/blogs/publish", formData, {
+        headers: {
+          Authorization: `Bearer ${user?.accessToken}`
+        }
+      })
+      .then((res) => {
+        toast.success("Blog created successfully");
+        router.push(`/blog`);
+      })
+      .catch((error) => {
+        toast.error("Failed to create blog");
+      });
+  };
+
+  const handleContentUpdate = (content: string) => {
+    setFormData({ ...formData, blogContent: content });
   };
 
   return (
@@ -46,8 +66,9 @@ export default function CreateBlogPage() {
       <h1 className="text-primary font-semibold text-2xl">Create A Blog</h1>
 
       <form
-        action="POST"
-        onSubmit={handleSubmit}
+        onSubmit={(e: any) => {
+          e.preventDefault();
+        }}
         className="w-full flex flex-col gap-4"
       >
         <div className="flex w-full h-32 border border-zinc-800 text-zinc-500 items-center justify-center select-none cursor-pointer">
@@ -69,30 +90,17 @@ export default function CreateBlogPage() {
         </div>
         <div className="flex flex-col gap-2 w-full">
           <label className="text-zinc-500">Blog Content</label>
-          <textarea
-            rows={6}
-            className="bg-transparent border-[2px] border-zinc-800 p-3 outline-none w-full"
-            placeholder="Enter Event Description"
-            value={formData.blogContent}
-            onChange={(e) =>
-              setFormData({ ...formData, blogContent: e.target.value })
-            }
-          />
-        </div>
-        <div className="flex flex-col gap-2 w-[400px]">
-          <label className="text-zinc-500">Date </label>
-          <input
-            type="datetime-local"
-            className="bg-transparent border-[2px] border-zinc-800 p-3 outline-none w-full"
-            value={formData.PublishDateTime}
-            onChange={(e) =>
-              setFormData({ ...formData, PublishDateTime: e.target.value })
-            }
+          <TextEditor
+            content={formData.blogContent}
+            setContent={handleContentUpdate}
           />
         </div>
         <TagInput />
         <div className="grid grid-cols-1 gap-2">
-          <button className="bg-primary font-semibold p-3 text-accent hover:bg-transparent hover:text-white transition-all border border-transparent hover:border-primary rounded-xl">
+          <button
+            className="bg-primary font-semibold p-3 text-accent hover:bg-transparent hover:text-white transition-all border border-transparent hover:border-primary rounded-xl"
+            onClick={handleSubmit}
+          >
             Create Blog
           </button>
         </div>

@@ -5,6 +5,7 @@ import { useUser } from "@/store";
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function EventsPage() {
   const [events, setEvents] = useState<CollegeEvent[]>([]);
@@ -13,6 +14,8 @@ export default function EventsPage() {
   const { user } = useUser();
 
   useEffect(() => {
+    if (user?.accessToken === undefined) return;
+    toast.loading("Fetching Events", { duration: 2000 });
     const fetchEvents = async () => {
       return await axios.post(
         "/api/db/events/fetch",
@@ -29,6 +32,7 @@ export default function EventsPage() {
       .then((res) => {
         setEvents(res.data.events);
         setLoading(false);
+        toast.success("Events fetched successfully");
       })
       .catch((error) => {
         console.log(error);

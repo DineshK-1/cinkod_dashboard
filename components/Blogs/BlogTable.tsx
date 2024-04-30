@@ -19,29 +19,13 @@ type Blog = {
   tags: string[];
 };
 
-export default function BlogTable() {
-  const data = [
-    {
-      title: "Blog 1",
-      views: 100,
-      upvotes: 10,
-      comments: 5,
-      shares: 2,
-      author: "John Doe",
-      published_date: "2023-05-01",
-      tags: ["tag1", "tag2"]
-    },
-    {
-      title: "Blog 2",
-      views: 200,
-      upvotes: 20,
-      comments: 10,
-      shares: 4,
-      author: "Jane Smith",
-      published_date: "2023-05-02",
-      tags: ["tag3", "tag4"]
-    }
-  ];
+export default function BlogTable({
+  blogs,
+  loading
+}: {
+  blogs: Blog[];
+  loading: boolean;
+}) {
   const columns = [
     {
       header: "Title",
@@ -75,21 +59,28 @@ export default function BlogTable() {
     },
     {
       header: "Date",
-      accessorKey: "published_date"
-    },
-    {
-      header: "Tags",
-      accessorKey: "tags",
-      cell: ({ row }: { row: any }) => <div>{row.original.tags.join(", ")}</div>
+      accessorKey: "createdAt",
+      cell: ({ row }: { row: any }) => (
+        <div>{new Date(row.original.createdAt).toDateString()}</div>
+      )
     }
+    // {
+    //   header: "Tags",
+    //   accessorKey: "tags",
+    //   cell: ({ row }: { row: any }) => <div>{row.original.tags.join(", ")}</div>
+    // }
   ];
   const table = useReactTable({
-    data,
+    data: blogs,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     enableColumnResizing: true
   });
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="overflow-x-auto">
       <table className="w-full table-auto border-collapse">
