@@ -18,27 +18,27 @@ export const updateUserAuthToken = (token: string): Promise<void> => {
   });
 };
 
-export const fetchAdminDetails = async (token: string): Promise<CollegeAdmin> => {
+// export const fetchAdminDetails = async (token: string): Promise<CollegeAdmin> => {
 
-  const { uid } = await FirebaseAdminAuth.verifyIdToken(token);
+//   const { uid } = await FirebaseAdminAuth.verifyIdToken(token);
 
-  if (!uid) {
-    throw new Error("User not found!");
-  }
-  const prisma = new PrismaClient();
-  const user = await prisma.collegeAdmin.findFirst({
-    where: {
-      google_uid: uid
-    },
-    include: {
-      college: true
-    }
-  });
-  console.log(user)
+//   if (!uid) {
+//     throw new Error("User not found!");
+//   }
+//   const prisma = new PrismaClient();
+//   const user = await prisma.collegeAdmin.findFirst({
+//     where: {
+//       google_uid: uid
+//     },
+//     include: {
+//       college: true
+//     }
+//   });
+//   console.log(user)
 
-  if (!user) {
-    throw new Error("User not found!");
-  }
+//   if (!user) {
+//     throw new Error("User not found!");
+//   }
 
-  return user;
-}
+//   return user;
+// }
