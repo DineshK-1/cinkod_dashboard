@@ -54,7 +54,7 @@ export default function CreateEventPage() {
         }
       })
       .then((res) => {
-        router.push(`/events/${res.data.id}`);
+        router.push(`/events/`);
       });
   };
 

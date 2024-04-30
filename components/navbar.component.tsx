@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import NavBarButton from "./Auth/NavBarButton";
 import toast, { Toaster } from "react-hot-toast";
+import Image from "next/image";
 
 function NavBar() {
   const [navbar, setNavbar] = useState(false);
@@ -12,8 +13,7 @@ function NavBar() {
   const loggedInNavbar = [
     { name: "Events", href: "/events" },
     { name: "Members", href: "/members" },
-    { name: "Blogs", href: "/blog" },
-    { name: "College", href: "/college" }
+    { name: "Blogs", href: "/blog" }
   ];
 
   const { user } = useUser();
@@ -26,7 +26,13 @@ function NavBar() {
           <div>
             <div className="flex items-center justify-between py-3 md:py-5 md:block">
               <Link href="/">
-                <h2 className="text-2xl text-cyan-600 font-bold ">CINKOD</h2>
+                <Image
+                  src="/Logo.png"
+                  width={200}
+                  height={100}
+                  unoptimized
+                  alt="CinKOD Logo"
+                />
               </Link>
               <div className="md:hidden">
                 <button
