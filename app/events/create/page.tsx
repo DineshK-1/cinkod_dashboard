@@ -1,7 +1,8 @@
-"use client"
+"use client";
 import TagInput from "@/components/CreateEvent/TagInput.component";
 import { useUser } from "@/store";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 interface FormData {
   bannerImage: File | null;
@@ -17,7 +18,6 @@ interface FormData {
   gallery: File[];
 }
 export default function CreateEventPage() {
-
   const { user } = useUser();
 
   const [formData, setFormData] = useState<FormData>({
@@ -30,9 +30,15 @@ export default function CreateEventPage() {
     toDateTime: "2023-05-01T18:00:00",
     tags: ["dummy", "tag1", "tag2"],
     speakers: ["John Doe", "Jane Smith"],
-    agenda: ["10:00 AM - Welcome", "11:00 AM - Keynote", "12:00 PM - Lunch Break"],
-    gallery: [],
+    agenda: [
+      "10:00 AM - Welcome",
+      "11:00 AM - Keynote",
+      "12:00 PM - Lunch Break"
+    ],
+    gallery: []
   });
+
+  const router = useRouter();
 
   const [speakers, setSpeakers] = useState<string>("");
   const [agenda, setAgenda] = useState<string>("");
@@ -41,12 +47,16 @@ export default function CreateEventPage() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    axios.post("/api/db/events/create", formData, {
-      headers: {
-        Authorization: `Bearer ${user.stsTokenManager.accessToken}`,
-      },
-    }).then((res) => console.log(res.data));
-  }
+    axios
+      .post("/api/db/events/create", formData, {
+        headers: {
+          Authorization: `Bearer ${user?.accessToken}`
+        }
+      })
+      .then((res) => {
+        router.push(`/events/${res.data.id}`);
+      });
+  };
 
   const handleBannerImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -73,7 +83,11 @@ export default function CreateEventPage() {
     <div className="flex flex-col gap-4 bg-background min-h-screen p-24">
       <h1 className="text-primary font-semibold text-2xl">Create Event</h1>
 
-      <form action="POST" onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
+      <form
+        action="POST"
+        onSubmit={handleSubmit}
+        className="w-full flex flex-col gap-4"
+      >
         <div className="flex w-full h-32 border border-zinc-800 text-zinc-500 items-center justify-center select-none cursor-pointer">
           Upload Banner Image
         </div>
@@ -86,7 +100,9 @@ export default function CreateEventPage() {
               className="bg-transparent border-[2px] border-zinc-800 p-3 outline-none w-full"
               placeholder="Enter Event Name"
               value={formData.eventName}
-              onChange={(e) => setFormData({ ...formData, eventName: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, eventName: e.target.value })
+              }
             />
           </div>
           <div className="flex flex-col gap-2 col-span-1">
@@ -96,7 +112,9 @@ export default function CreateEventPage() {
               className="bg-transparent border-[2px] border-zinc-800 p-3 outline-none w-full"
               placeholder="Enter Max Slots"
               value={formData.maxSlots}
-              onChange={(e) => setFormData({ ...formData, maxSlots: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, maxSlots: e.target.value })
+              }
             />
           </div>
           <div className="flex flex-col gap-2 col-span-1">
@@ -106,7 +124,9 @@ export default function CreateEventPage() {
               className="bg-transparent border-[2px] border-zinc-800 p-3 outline-none w-full"
               placeholder="Enter Location"
               value={formData.location}
-              onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, location: e.target.value })
+              }
             />
           </div>
         </div>
@@ -118,7 +138,9 @@ export default function CreateEventPage() {
             className="bg-transparent border-[2px] border-zinc-800 p-3 outline-none w-full"
             placeholder="Enter Event Description"
             value={formData.eventDescription}
-            onChange={(e) => setFormData({ ...formData, eventDescription: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, eventDescription: e.target.value })
+            }
           />
         </div>
 
@@ -129,7 +151,9 @@ export default function CreateEventPage() {
               type="datetime-local"
               className="bg-transparent border-[2px] border-zinc-800 p-3 outline-none w-full"
               value={formData.fromDateTime}
-              onChange={(e) => setFormData({ ...formData, fromDateTime: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, fromDateTime: e.target.value })
+              }
             />
           </div>
           <div className="flex flex-col gap-2 w-full">
@@ -138,7 +162,9 @@ export default function CreateEventPage() {
               type="datetime-local"
               className="bg-transparent border-[2px] border-zinc-800 p-3 outline-none w-full"
               value={formData.toDateTime}
-              onChange={(e) => setFormData({ ...formData, toDateTime: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, toDateTime: e.target.value })
+              }
             />
           </div>
         </div>
@@ -155,16 +181,19 @@ export default function CreateEventPage() {
                   value={speakers}
                   onChange={(e) => setSpeakers(e.target.value)}
                 />
-                <span className="p-4 px-6 bg-zinc-700 cursor-pointer select-none" onClick={handleSpeakerAdd}>
+                <span
+                  className="p-4 px-6 bg-zinc-700 cursor-pointer select-none"
+                  onClick={handleSpeakerAdd}
+                >
                   +
                 </span>
               </div>
 
-              {
-                formData.speakers.map((speaker, index) => (
-                  <div key={index} className="flex p-3 w-full bg-zinc-600">{speaker}</div>
-                ))
-              }
+              {formData.speakers.map((speaker, index) => (
+                <div key={index} className="flex p-3 w-full bg-zinc-600">
+                  {speaker}
+                </div>
+              ))}
             </div>
           </div>
           <div className="flex flex-col gap-2 w-full">
@@ -178,15 +207,18 @@ export default function CreateEventPage() {
                   value={agenda}
                   onChange={(e) => setAgenda(e.target.value)}
                 />
-                <span className="p-4 px-6 bg-zinc-700 cursor-pointer select-none" onClick={handleAgendaAdd}>
+                <span
+                  className="p-4 px-6 bg-zinc-700 cursor-pointer select-none"
+                  onClick={handleAgendaAdd}
+                >
                   +
                 </span>
               </div>
-              {
-                formData.agenda.map((agenda, index) => (
-                  <div key={index} className="flex p-3 w-full bg-zinc-600">{agenda}</div>
-                ))
-              }
+              {formData.agenda.map((agenda, index) => (
+                <div key={index} className="flex p-3 w-full bg-zinc-600">
+                  {agenda}
+                </div>
+              ))}
             </div>
           </div>
           {/* <div className="flex flex-col gap-2 w-full">

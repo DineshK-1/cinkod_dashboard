@@ -4,6 +4,7 @@ import { Cross1Icon, HamburgerMenuIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import NavBarButton from "./Auth/NavBarButton";
 
 function NavBar() {
   const [navbar, setNavbar] = useState(false);
@@ -12,8 +13,7 @@ function NavBar() {
     { name: "Events", href: "/events" },
     { name: "Members", href: "/members" },
     { name: "Blogs", href: "/blog" },
-    { name: "College", href: "/college" },
-    { name: "Logout", href: "/auth/logout" },
+    { name: "College", href: "/college" }
   ];
 
   const { user } = useUser();
@@ -32,32 +32,31 @@ function NavBar() {
                 className="p-2 text-gray-700 rounded-md outline-none focus:border-gray-400 focus:border"
                 onClick={() => setNavbar(!navbar)}
               >
-                {navbar ? (
-                  <Cross1Icon />
-                ) : (
-                  <HamburgerMenuIcon />
-                )}
+                {navbar ? <Cross1Icon /> : <HamburgerMenuIcon />}
               </button>
             </div>
           </div>
         </div>
         <div>
           <div
-            className={`flex-1 flex items-center justify-self-center pb-3 mt-8 md:block md:pb-0 md:mt-0 ${navbar ? "p-6 md:p-0 block gap-4" : "hidden"
-              }`}
+            className={`flex-1 flex items-center justify-self-center pb-3 mt-8 md:block md:pb-0 md:mt-0 ${
+              navbar ? "p-6 md:p-0 block gap-4" : "hidden"
+            }`}
           >
             <ul className="h-screen md:h-auto items-center justify-center md:flex gap-6">
               {user
                 ? loggedInNavbar.map((link) => (
-                  <li key={link.name} className="">
-                    <Link href={link.href}>{link.name}</Link>
-                  </li>
-                ))
+                    <li key={link.name} className="">
+                      <Link href={link.href}>{link.name}</Link>
+                    </li>
+                  ))
                 : loggedOutNavbar.map((link) => (
-                  <li key={link.name} className="">
-                    <Link href={link.href}>{link.name}</Link>
-                  </li>
-                ))}
+                    <></>
+                    // <li key={link.name} className="">
+                    //   <Link href={link.href}>{link.name}</Link>
+                    // </li>
+                  ))}
+              <NavBarButton user={user} />
             </ul>
           </div>
         </div>

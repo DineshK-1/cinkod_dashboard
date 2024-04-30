@@ -8,7 +8,6 @@ export type User = {
   college_name: string;
   phone: string;
   bio: string;
-  socials: string[];
   createdAt: Date;
   updatedAt: Date;
 };

@@ -1,13 +1,18 @@
+import { verifyHeaderHasToken } from "@/services/auth";
 import { PrismaClient } from "@prisma/client";
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-export async function GET(req: Request) {
+export async function POST(req: Request) {
   try {
-    const token = cookies().get("authToken")?.value;
+    const token = verifyHeaderHasToken(req);
 
     if (!token) {
-      throw new Error("No Authorization Found!");
+      return new NextResponse(
+        JSON.stringify({
+          message: "Unauthorized"
+        }),
+        { status: 401 }
+      );
     }
 
     const prisma = new PrismaClient();

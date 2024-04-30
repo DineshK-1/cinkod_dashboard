@@ -1,6 +1,7 @@
 "use client";
 import { CollegeEvent } from "@/@types";
 import EventCard from "@/components/Events/EventCard";
+import { useUser } from "@/store";
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -9,9 +10,19 @@ export default function EventsPage() {
   const [events, setEvents] = useState<CollegeEvent[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
+  const { user } = useUser();
+
   useEffect(() => {
     const fetchEvents = async () => {
-      return await axios.get("/api/db/events/get");
+      return await axios.post(
+        "/api/db/events/fetch",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${user?.accessToken}`
+          }
+        }
+      );
     };
 
     fetchEvents()
