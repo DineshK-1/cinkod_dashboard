@@ -20,7 +20,7 @@ interface FormData {
 }
 
 async function checkIfUserHasAccess(token: string) {
-  const { uid } = await FirebaseAdminAuth.verifyIdToken(token);
+  const { uid } = await FirebaseAdminAuth.verifyIdToken(token, true);
 
   if (!uid) {
     throw new Error("User not found!");

@@ -8,7 +8,7 @@ export const verifyHeaderHasToken = (req: Request): string => {
 
 // export const fetchAdminDetails = async (token: string): Promise<CollegeAdmin> => {
 
-//   const { uid } = await FirebaseAdminAuth.verifyIdToken(token);
+//   const { uid } = await FirebaseAdminAuth.verifyIdToken(token, true);
 
 //   if (!uid) {
 //     throw new Error("User not found!");

@@ -18,7 +18,7 @@ const app = getFirebaseAdminApp();
 export const FirebaseAdminAuth = app.auth();
 
 export const getUserUID = async (token: string) => {
-  const decodedToken = await FirebaseAdminAuth.verifyIdToken(token);
+  const decodedToken = await FirebaseAdminAuth.verifyIdToken(token, true);
   if (!decodedToken.uid) throw new Error("Invalid token");
   return decodedToken.uid;
 };
