@@ -4,12 +4,22 @@ import { useUser } from "@/store";
 import { signOut } from "firebase/auth";
 import { auth } from "@/firebase/firebase";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export default function ProfileHeader() {
   const { user } = useUser();
   const router = useRouter();
 
   const handleLogout = () => {
+    axios.post(
+      "/api/auth/logout",
+      {},
+      {
+        headers: {
+          Authorization: "Bearer " + user?.accessToken
+        }
+      }
+    );
     signOut(auth).finally(() => {
       router.replace("/");
     });

@@ -22,3 +22,7 @@ export const getUserUID = async (token: string) => {
   if (!decodedToken.uid) throw new Error("Invalid token");
   return decodedToken.uid;
 };
+
+export const revokeRefreshToken = async (uid: string) => {
+  await FirebaseAdminAuth.revokeRefreshTokens(uid);
+};
