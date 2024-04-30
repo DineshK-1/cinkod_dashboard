@@ -1,4 +1,6 @@
 "use client";
+import { CollegeEvent } from "@/@types";
+import EventCard from "@/components/Events/EventCard";
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -10,7 +12,7 @@ async function getEvents() {
 
 export default function EventsPage() {
 
-  const [events, setEvents] = useState([])
+  const [events, setEvents] = useState<CollegeEvent[]>([])
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -44,33 +46,12 @@ export default function EventsPage() {
           <span>Total Events: 400</span>
         </div>
       </div>
-      <div className="grid grid-cols-4">
-        <div className="bg-zinc-800 p-6 rounded-xl text-sm flex flex-col gap-4">
-          <span className="bg-gray-500 w-full h-56"></span>
-          <span className="text-xl">Event Name</span>
-          <span className="text-gray-300">
-            Event Description Non laboris commodo commodo mollit ea irure sit
-            exercitation consectetur. Consectetur veniam est ea in ullamco
-            aliquip cillum voluptate. Eiusmod enim duis occaecat magna dolor.
-            Qui ex do anim aute irure enim ullamco excepteur. Laboris qui
-            laboris laboris id in. Sunt culpa sunt aliquip ullamco pariatur
-            laborum consequat do anim laboris.
-          </span>
-          <div className="flex justify-between w-full gap-2">
-            <Link
-              href={`/events/edit/event`}
-              className="bg-accent font-semibold p-3 text-black hover:bg-transparent hover:text-white transition-all border border-transparent hover:border-accent w-full text-center"
-            >
-              Edit Details
-            </Link>
-            <button className="bg-accent font-semibold p-3 text-black hover:bg-transparent hover:text-white transition-all border border-transparent hover:border-accent w-full">
-              View Stats
-            </button>
-          </div>
-          <button className="bg-primary font-semibold p-3 text-black hover:bg-transparent hover:text-white transition-all border border-transparent hover:border-primary">
-            View Page
-          </button>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {
+          events.map((event) => {
+            return <EventCard key={event.id} event={event} />
+          })
+        }
       </div>
     </main>
   );

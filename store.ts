@@ -3,7 +3,7 @@ import { FirebaseUser } from "./@types";
 import { persist } from "zustand/middleware";
 
 interface UserState {
-  user: FirebaseUser | null;
+  user: any | null;
   setUser: (user: FirebaseUser) => void;
   logoutUser: () => void;
 }
