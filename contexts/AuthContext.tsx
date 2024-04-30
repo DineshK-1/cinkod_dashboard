@@ -1,41 +1,36 @@
 "use client";
 
 import { createContext, ReactNode, useEffect, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/firebase/firebase";
 import { useUser } from "@/store";
-import { updateUserAuthToken } from "@/services/auth";
+import axios from "axios";
 
 export const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [initialLoader, setInitialLoader] = useState<boolean>(true);
 
-  const pathname = usePathname();
-  const router = useRouter();
   const { setUser, logoutUser } = useUser();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      console.log(user);
       try {
         if (user) {
+          console.log("called");
           const token = await user.getIdToken();
-          await updateUserAuthToken(token);
-          // await updateUserAuthToken(token);
-          // const userRef = doc(db, "users", user.uid);
-          // const userDoc = await getDoc(userRef);
-          // if (userDoc.exists() && userDoc.data().texusId !== null) {
-          //   const userData = userDoc.data();
-          //   setUser({ ...userData, uid: user.uid } as FirebaseUser);
-          // } else {
-          //   router.push(
-          //     `/register?email=${user.email}&uid=${userDoc.id}&displayName=${user.displayName}`
-          //   );
-          // }
-          // const userData = userDoc.data();
-          // setUser({ ...userData, uid: user.uid } as FirebaseUser);
+
+          const { data } = await axios.post(
+            "/api/auth/login",
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            }
+          );
+
+          setUser(data.user);
         } else {
           logoutUser();
         }
@@ -46,7 +41,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     });
     return () => unsubscribe();
-  }, [logoutUser, pathname, router, setUser]);
+  }, [logoutUser, setUser, setInitialLoader]);
 
   return (
     <AuthContext.Provider value={{}}>

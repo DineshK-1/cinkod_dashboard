@@ -1,21 +1,9 @@
-import { CollegeAdmin } from "@/@types";
-import { FirebaseAdminAuth } from "@/firebase/firebaseAdmin";
-import { PrismaClient } from "@prisma/client";
-import axios from "axios";
-
-export const updateUserAuthToken = (token: string): Promise<void> => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      await axios.post(
-        "/api/auth/login",
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      resolve();
-    } catch (error) {
-      reject(error);
-    }
-  });
+export const verifyHeaderHasToken = (req: Request): string => {
+  const token = req.headers.get("Authorization")?.split("Bearer ")[1];
+  if (!token) {
+    throw new Error("No token found in Authorization header");
+  }
+  return token;
 };
 
 // export const fetchAdminDetails = async (token: string): Promise<CollegeAdmin> => {

@@ -1,4 +1,5 @@
 import { FirebaseAdminAuth } from "@/firebase/firebaseAdmin";
+import { verifyHeaderHasToken } from "@/services/auth";
 import { PrismaClient } from "@prisma/client";
 import axios from "axios";
 import { verify } from "crypto";
@@ -17,7 +18,6 @@ interface FormData {
   agenda: string[];
   gallery: string[];
 }
-
 
 async function checkIfUserHasAccess(token: string) {
   const { uid } = await FirebaseAdminAuth.verifyIdToken(token);
@@ -39,13 +39,6 @@ async function checkIfUserHasAccess(token: string) {
   return user;
 }
 
-function verifyHeaderHasToken(req: Request) {
-  const token = req.headers.get("Authorization")?.split("Bearer ")[1];
-  if (!token) {
-    throw new Error("No token found in Authorization header");
-  }
-  return token;
-}
 export async function POST(req: Request) {
   try {
     const token = verifyHeaderHasToken(req);
@@ -54,9 +47,20 @@ export async function POST(req: Request) {
       throw new Error(error);
     });
 
-
     const prisma = new PrismaClient();
-    const { bannerImage, eventName, maxSlots, location, eventDescription, fromDateTime, toDateTime, tags, speakers, agenda, gallery } = await req.json() as FormData;
+    const {
+      bannerImage,
+      eventName,
+      maxSlots,
+      location,
+      eventDescription,
+      fromDateTime,
+      toDateTime,
+      tags,
+      speakers,
+      agenda,
+      gallery
+    } = (await req.json()) as FormData;
 
     const newEvent = await prisma.event.create({
       data: {
@@ -70,7 +74,7 @@ export async function POST(req: Request) {
         college: { connect: { id: user.collegeId } }
       }
     });
-    console.log(newEvent)
+    console.log(newEvent);
     return new NextResponse(JSON.stringify(newEvent), { status: 200 });
   } catch (error: any) {
     return new NextResponse("Error Creating Blog", {

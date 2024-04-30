@@ -1,10 +1,10 @@
 import { create } from "zustand";
-import { FirebaseUser } from "./@types";
+import { LoggedInCollegeAdmin } from "./@types";
 import { persist } from "zustand/middleware";
 
 interface UserState {
-  user: any | null;
-  setUser: (user: FirebaseUser) => void;
+  user: LoggedInCollegeAdmin | null;
+  setUser: (user: LoggedInCollegeAdmin) => void;
   logoutUser: () => void;
 }
 const initialUserState = { user: null };
@@ -18,7 +18,7 @@ export const useUser = create<UserState>()(
       },
       logoutUser: () => {
         set(() => ({ ...initialUserState }));
-      },
+      }
     }),
     { name: "userStore" }
   )

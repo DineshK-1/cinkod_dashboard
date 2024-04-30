@@ -5,30 +5,24 @@ import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-
-async function getEvents() {
-
-}
-
 export default function EventsPage() {
-
-  const [events, setEvents] = useState<CollegeEvent[]>([])
+  const [events, setEvents] = useState<CollegeEvent[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchEvents = async () => {
-      return await axios.get('/api/db/events/get');
-    }
+      return await axios.get("/api/db/events/get");
+    };
 
-    fetchEvents().then((res) => {
-
-      setEvents(res.data.events);
-    }).catch((error) => {
-      console.log(error)
-    })
-  }, [])
-
-  console.log(events)
-
+    fetchEvents()
+      .then((res) => {
+        setEvents(res.data.events);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   return (
     <main className="flex flex-col gap-4 p-24 bg-background min-h-screen">
@@ -46,13 +40,18 @@ export default function EventsPage() {
           <span>Total Events: 400</span>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {
-          events.map((event) => {
-            return <EventCard key={event.id} event={event} />
-          })
-        }
-      </div>
+
+      {loading ? (
+        <div className="flex items-center justify-center w-full h-32">
+          <p>Loading...</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {events.map((event) => {
+            return <EventCard key={event.id} event={event} />;
+          })}
+        </div>
+      )}
     </main>
   );
 }

@@ -1,10 +1,3 @@
-export type FirebaseUser = {
-  uid: string;
-  displayName: string;
-  email: string;
-  photoURL?: string | null;
-};
-
 export type User = {
   id: number;
   email: string;
@@ -18,6 +11,20 @@ export type User = {
   socials: string[];
   createdAt: Date;
   updatedAt: Date;
+};
+
+export type LoggedInCollegeAdmin = {
+  accessToken: string;
+  email: string;
+  name: string;
+  user_name: string;
+  google_uid: string;
+  phone: string;
+  collegeId: number;
+  isAdminstrator: boolean;
+  isLead: boolean;
+  isCoreTeam: boolean;
+  isMember: boolean;
 };
 
 export type CollegeAdmin = {
