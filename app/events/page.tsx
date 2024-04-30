@@ -1,6 +1,33 @@
+"use client";
+import axios from "axios";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+
+
+async function getEvents() {
+
+}
 
 export default function EventsPage() {
+
+  const [events, setEvents] = useState([])
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      return await axios.get('/api/db/events/get');
+    }
+
+    fetchEvents().then((res) => {
+
+      setEvents(res.data.events);
+    }).catch((error) => {
+      console.log(error)
+    })
+  }, [])
+
+  console.log(events)
+
+
   return (
     <main className="flex flex-col gap-4 p-24 bg-background min-h-screen">
       <div className="flex w-full justify-between">

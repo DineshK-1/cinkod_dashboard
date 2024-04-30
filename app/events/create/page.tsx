@@ -1,5 +1,6 @@
 "use client"
 import TagInput from "@/components/CreateEvent/TagInput.component";
+import { useUser } from "@/store";
 import axios from "axios";
 import { useState } from "react";
 interface FormData {
@@ -16,6 +17,9 @@ interface FormData {
   gallery: File[];
 }
 export default function CreateEventPage() {
+
+  const { user } = useUser();
+
   const [formData, setFormData] = useState<FormData>({
     bannerImage: null,
     eventName: "Dummy Event Name",
@@ -37,7 +41,11 @@ export default function CreateEventPage() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    axios.post("/api/db/events/create", formData).then((res) => console.log(res.data));
+    axios.post("/api/db/events/create", formData, {
+      headers: {
+        Authorization: `Bearer ${user.stsTokenManager.accessToken}`,
+      },
+    }).then((res) => console.log(res.data));
   }
 
   const handleBannerImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
