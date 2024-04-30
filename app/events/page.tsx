@@ -33,7 +33,7 @@ export default function EventsPage() {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [user?.accessToken]);
 
   return (
     <main className="flex flex-col gap-4 p-24 bg-background min-h-screen">

@@ -1,10 +1,11 @@
 "use client";
 
 import { createContext, ReactNode, useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "@/firebase/firebase";
 import { useUser } from "@/store";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 export const AuthContext = createContext({});
 
@@ -19,19 +20,32 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (user) {
           const token = await user.getIdToken();
 
-          const { data } = await axios.post(
-            "/api/auth/login",
-            {},
-            {
-              headers: {
-                Authorization: `Bearer ${token}`
+          const { data } = await axios
+            .post(
+              "/api/auth/login",
+              {},
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`
+                }
               }
-            }
-          );
-
+            )
+            .catch(() => {
+              signOut(auth);
+              logoutUser();
+              toast.error("You are not authorized to access this website.");
+              return {
+                data: { user: null }
+              };
+            });
+          if (!data.user) {
+            return;
+          }
+          toast.success("Logged in successfully.");
           setUser(data.user);
         } else {
           logoutUser();
+          toast.success("Logged out successfully.");
         }
       } catch (error) {
         console.log(error);

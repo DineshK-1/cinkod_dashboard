@@ -1,3 +1,4 @@
+import { getUserUID } from "@/firebase/firebaseAdmin";
 import { verifyHeaderHasToken } from "@/services/auth";
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
@@ -15,7 +16,24 @@ export async function POST(req: Request) {
       );
     }
 
+    const uid = await getUserUID(token);
+
     const prisma = new PrismaClient();
+
+    const isAdmin = await prisma.collegeAdmin.findFirst({
+      where: {
+        google_uid: uid
+      }
+    });
+
+    if (!isAdmin) {
+      return new NextResponse(
+        JSON.stringify({
+          message: "Unauthorized"
+        }),
+        { status: 401 }
+      );
+    }
 
     const user = await prisma.collegeAdmin.findFirst({
       where: {
