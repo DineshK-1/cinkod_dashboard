@@ -58,7 +58,59 @@ export default function ProfilePage() {
           )}
           {infostate === 1 && (
             <>
-              <h2></h2>
+              <h2 className="text-2xl">College Information</h2>
+              <div className="clginfo grid grid-cols-4 gap-8 m-8">
+                <div className="name col-span-4 text-xl font-bold">
+                  COLLEGE NAME
+                </div>
+                <div className="col-span-2 ">
+                  <div className="email flex-col flex">
+                    <p className="text-lg font-semibold">College Email:</p>
+                    <p className="mx-1">email@emial.com</p>
+                  </div>
+                </div>
+                <div className="col-span-2 ">
+                  <div className="leadid flex-col flex">
+                    <p className="text-lg font-semibold">Lead ID:</p>
+                    <p className="mx-1">#161</p>
+                  </div>
+                </div>
+                <div className="col-span-4">
+                  <div className="desc flex-col flex">
+                    <p className="text-lg font-semibold">
+                      College Description:
+                    </p>
+                    <p className="m-1">
+                      Lorem Ipsum is simply dummy text of the printing and
+                      typesetting industry. Lorem Ipsum has been the industrys
+                      standard dummy text ever since the 1500s, when an unknown
+                      printer took a galley of type and scrambled it to make a
+                      type specimen book. It has survived not only five
+                      centuries, but also the leap into electronic typesetting,
+                      remaining essentially unchanged. It was popularised in the
+                      1960s with the release of Letraset sheets containing Lorem
+                      Ipsum passages, and more recently with desktop publishing
+                      software like Aldus PageMaker including versions of Lorem
+                      Ipsum.
+                    </p>
+                  </div>
+                </div>
+                <div className="col-span-4 items-center">
+                  <p className="font-semibold">Members Count:</p>
+                  <p className="text-2xl">1,728</p>
+                </div>
+                <div className="col-span-4 flex flex-col gap-4">
+                  <p className="font-semibold text-lg"> Gallery: </p>
+                  <div className="flex gap-2">
+                    <span className="w-32 h-32 bg-slate-600"></span>
+                    <span className="w-32 h-32 bg-slate-600"></span>
+                    <span className="w-32 h-32 bg-slate-600"></span>
+                    <span className="w-32 h-32 bg-slate-600"></span>
+                    <span className="w-32 h-32 bg-slate-600"></span>
+                    <span className="w-32 h-32 bg-slate-600"></span>
+                  </div>
+                </div>
+              </div>
             </>
           )}
         </div>
