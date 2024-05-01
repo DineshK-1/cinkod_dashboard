@@ -6,6 +6,7 @@ import { auth } from "@/firebase/firebase";
 import { useUser } from "@/store";
 import axios from "axios";
 import toast from "react-hot-toast";
+import Cookies from "js-cookie";
 
 export const AuthContext = createContext({});
 
@@ -41,9 +42,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           if (!data.user) {
             return;
           }
+          Cookies.set("accessToken", data.user.accessToken);
           toast.success("Logged in successfully.");
           setUser(data.user);
         } else {
+          Cookies.remove("accessToken");
           logoutUser();
           toast.success("Logged out successfully.");
         }

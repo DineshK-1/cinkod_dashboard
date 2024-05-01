@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { LoggedInCollegeAdmin } from "./@types";
 import { persist } from "zustand/middleware";
+import { LoggedInCollegeAdmin } from "./@types";
 
 interface UserState {
   user: LoggedInCollegeAdmin | null;
@@ -11,7 +11,7 @@ const initialUserState = { user: null };
 
 export const useUser = create<UserState>()(
   persist<UserState>(
-    (set) => ({
+    (set, get) => ({
       ...initialUserState,
       setUser: (user) => {
         set(() => ({ user: user }));
