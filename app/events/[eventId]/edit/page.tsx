@@ -1,6 +1,5 @@
 "use client";
 import TagInput from "@/components/CreateEvent/TagInput.component";
-import { fetchEvent } from "@/components/Events/fetch-event";
 import { useUser } from "@/store";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -56,37 +55,35 @@ export default function EditEventPage0({
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      const event = await fetchEvent(params.eventID);
-      if (event) {
-        setFormData(event);
-      } else {
+      try {
+        const res = await axios.post(`/api/db/events/${params.eventID}`, null, {
+          headers: {
+            Authorization: `Bearer ${user?.accessToken}`
+          }
+        });
+        setFormData(res.data.event);
+      } catch (error) {
+        console.error(error);
         toast.error("Failed to fetch event");
       }
       setIsLoading(false);
     };
 
     fetchData();
-  }, [params.eventID]);
+  }, [params.eventID, user?.accessToken]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (formData) {
+    if (formData && user?.accessToken) {
       try {
-        const res = await fetch(`/api/db/events/${params.eventID}`, {
-          method: "PUT",
+        await axios.put(`/api/db/events/${params.eventID}`, formData, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${user?.accessToken}`
-          },
-          body: JSON.stringify(formData)
+          }
         });
-
-        if (res.ok) {
-          router.push("/events");
-          toast.success("Event updated successfully");
-        } else {
-          toast.error("Failed to update event");
-        }
+        router.push("/events");
+        toast.success("Event updated successfully");
       } catch (error) {
         console.error(error);
         toast.error("An error occurred");
